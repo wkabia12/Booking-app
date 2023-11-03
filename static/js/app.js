@@ -5,6 +5,7 @@ document.querySelectorAll(".dropdown-item").forEach(item => {
     });
 });
 
+
 function filterServices(categoryId) {
     const serviceList = document.getElementById("serviceList");
 
@@ -24,7 +25,7 @@ function filterServices(categoryId) {
                         <div class="card-body">
                             <h5 class="card-title">${service.name}</h5>
                             <p class="card-text">${service.description}</p>
-                            <a href="#" class="btn btn-primary">Book Now</a>
+                            <a href="/booking/${service.name}" class="btn btn-primary">Book Now</a>
                         </div>
                     </div>
                 `;

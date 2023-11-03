@@ -1,5 +1,5 @@
-from flask import jsonify
-from flask import render_template, jsonify, request
+from flask import request
+from flask import render_template, jsonify
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -54,3 +54,8 @@ def get_services(category_id):
 
     # Return services data as a JSON response
     return jsonify(services_data)
+
+@app.route('/booking/<service_name>', methods=['GET'])
+def booking_form(service_name):
+
+    return render_template('booking.html', service_name=service_name)
