@@ -52,9 +52,10 @@ def get_services(category_id):
         }
         services_data.append(service_data)
 
-    # Return services data as a JSON response
+    # Return services data as a JSON response for ajax interpretation
     return jsonify(services_data)
 
+#endpoint to dynamically generate service name on the booking card
 @app.route('/booking/<service_name>', methods=['GET'])
 def booking_form(service_name):
 
