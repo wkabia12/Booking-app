@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     // Function to generate time slots based on start and end hours
+    // pending logic to generate time slots from morning if a future date is set
     function generateTimeSlots(start, end) {
         const timeSlots = [];
         for (let i = start; i <= end; i++) {
