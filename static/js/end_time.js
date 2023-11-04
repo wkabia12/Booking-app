@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // ... Previous code ...
 
     // Function to generate time slots based on start and end hours
     function generateTimeSlots(start, end) {
@@ -25,6 +24,4 @@ document.addEventListener('DOMContentLoaded', function () {
         option.text = slot;
         timeSlotSelect.add(option);
     });
-
-    // ... Rest of your code ...
 });
