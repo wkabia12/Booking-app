@@ -1,9 +1,10 @@
-from flask import flash, redirect, request, url_for, session
+from flask import  request
 from flask import render_template, jsonify
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
-
+from flask import session
+from flask import redirect, url_for
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:password@localhost:3306/scheduling_app'
@@ -114,13 +115,19 @@ def login():
     user = User.query.filter_by(email=email).first()
 
     if user and user.password == password:
+        session['user_id'] = user.id 
         # User exists and password matches, return success response
         return jsonify(success=True, message='Login successful. Welcome, {}!'.format(user.username)), 200
     else:
         # Invalid credentials, return failure response
         return jsonify(success=False, message='Invalid username or password.'), 401
     
-    
+@app.route('/logout')
+def logout():
+    # Remove user_id from the session if it's there
+    session.pop('user_id', None)
+    # Redirect to the signup page
+    return redirect(url_for('signup'))    
 
 
 # Home route to display all categories and services
@@ -172,7 +179,7 @@ def confirm_booking():
     service_name = data.get('service_name')
     service_id = get_service_id(service_name)
 
-    user_id = 2 #should be obtained from session
+    user_id = session.get('user_id')  # Get user ID from session
     booking_date = data.get('booking_date')
     start_time = data.get('start_time')
     end_time = data.get('end_time')
@@ -188,7 +195,7 @@ def confirm_booking():
 
 @app.route('/history_data')
 def history_data():
-    user_id = 2  # Replace this with the actual user ID (e.g., obtained from session)
+    user_id = session.get('user_id')  # Get user ID from session
     # Query the Booking table to get bookings for the user
     user_bookings = Booking.query.filter_by(user_id=user_id).all()
 
