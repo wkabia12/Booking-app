@@ -41,11 +41,12 @@
             </a>
         </div>
     </nav>
+    <div id="flash-message-container"></div>
     <div class="container my-3">
         <div class="row row-cols-1 row-cols-md-2 g-4">
             {% for booking in bookings %}
             <div class="col">
-                <div class="card">
+                <div class="card" data-booking-id="{{ booking.id }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ booking.service_name }}</h5>
                         <p class="card-text">Date: {{ booking.booking_date }}</p>

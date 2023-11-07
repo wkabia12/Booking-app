@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const endTimeSlotElement = document.getElementById('endTimeSlot');
         const selectedEndTime = endTimeSlotElement.options[endTimeSlotElement.selectedIndex].textContent;
 
+
         const bookingData = {
             service_name: serviceName,
             booking_date: selectedDate,
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 showFlashMessage('Booking successful! Please wait as we redirect you to your history'); // Show flash message for 5 seconds
             } else {
                 showFlashMessage('Booking failed. Please try again.'); // Show error message for 5 seconds
-                window.location.href = '/services'
+                window.location.reload()
             }
         })
         .catch(error => {
@@ -57,13 +58,5 @@ function showFlashMessage(message) {
     setTimeout(() => {
         flashMessage.remove();
         window.location.href = '/history'; // Redirect to the history page
-    }, 8000);
+    }, 3000);
 }
-
-
-
-
-
-
-
-

@@ -137,6 +137,7 @@ def history_data():
     booked_services = []
     for booking in user_bookings:
         service_id = booking.service_id
+
         # Query the Service table to get the service details based on the service_id
         service = Service.query.get(service_id)
         if service:
@@ -144,7 +145,8 @@ def history_data():
                 "service_name": service.name,
                 "booking_date": booking.booking_date.strftime('%Y-%m-%d'),  # Format the date if needed
                 "start_time": booking.start_time,
-                "end_time": booking.end_time
+                "end_time": booking.end_time,
+                "booking_id": booking.id
             }
             booked_services.append(service_info)
 
@@ -154,3 +156,15 @@ def history_data():
 def history():
 
     return render_template('history.html')
+
+# API route to cancel booking by ID
+@app.route('/cancel_booking/<int:booking_id>', methods=['DELETE'])
+def cancel_booking(booking_id):
+    booking_to_cancel = Booking.query.get(booking_id)
+
+    if booking_to_cancel:
+        db.session.delete(booking_to_cancel)
+        db.session.commit()
+        return jsonify(message='Booking canceled successfully'), 200
+    else:
+        return jsonify(message='Booking not found'), 404
