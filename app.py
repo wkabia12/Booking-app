@@ -68,6 +68,7 @@ class Booking(db.Model):
         self.end_time = end_time
 
 
+
 @app.route('/signup', methods=['GET'])
 def signup():
 
@@ -99,6 +100,27 @@ def signup_post():
 
         # Sign up successful, return success response
         return jsonify(success=True, message='Sign up successful. Welcome, {}!'.format(username)), 200
+    
+# Login route
+@app.route('/login_post', methods=['POST'])
+def login():
+    data = request.get_json()
+
+    # Extract data from the JSON request
+    email = data.get('email')
+    password = data.get('password')
+
+    # Check if the email exists in the database
+    user = User.query.filter_by(email=email).first()
+
+    if user and user.password == password:
+        # User exists and password matches, return success response
+        return jsonify(success=True, message='Login successful. Welcome, {}!'.format(user.username)), 200
+    else:
+        # Invalid credentials, return failure response
+        return jsonify(success=False, message='Invalid username or password.'), 401
+    
+    
 
 
 # Home route to display all categories and services
@@ -150,7 +172,7 @@ def confirm_booking():
     service_name = data.get('service_name')
     service_id = get_service_id(service_name)
 
-    user_id = 2
+    user_id = 2 #should be obtained from session
     booking_date = data.get('booking_date')
     start_time = data.get('start_time')
     end_time = data.get('end_time')

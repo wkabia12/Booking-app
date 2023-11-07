@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.success) {
                     // Login was successful, display success message or redirect
                     console.log('Login successful:', data.message);
-                    showFlashMessage("Login successful! Redirecting...");
+                    showFlashMessage("Login successful! Welcome");
 
                     // Redirect to the desired page (for example, dashboard)
                     setTimeout(() => {
