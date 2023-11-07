@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Sign Up</title>
+    <!-- Include the Tailwind CSS CDN link -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-200 h-screen flex items-center justify-center">
+    <div class="flex flex-col items-center w-full max-w-md">
+        <!-- Flash Message Container -->
+        <div id="flash-message-container" class="w-96 bg-blue-500 text-white rounded p-4 mb-4">
+            <!-- Flash Message Content Goes Here -->
+        </div>
+        <div class="bg-white p-8 rounded shadow-md w-96">
+            <h2 class="text-2xl font-semibold mb-6" id="form-title">Sign Up</h2>
+            <form id="auth-form">
+                <div class="mb-4" id="username-field">
+                    <label for="username" class="block text-sm font-medium text-gray-600">Username</label>
+                    <input type="text" id="username" name="username"
+                        class="mt-1 p-2 w-full border rounded focus:outline-none focus:ring focus:border-blue-300">
+                </div>
+
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+                    <input type="email" id="email" name="email"
+                        class="mt-1 p-2 w-full border rounded focus:outline-none focus:ring focus:border-blue-300"
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required title="Invalid email address">
+                </div>
+
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+                    <input type="password" id="password" name="password"
+                        class="mt-1 p-2 w-full border rounded focus:outline-none focus:ring focus:border-blue-300"
+                        pattern=".{1,10}" required title="Password must be between 1 and 10 characters">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+                    id="submit-btn">
+                    Sign Up
+                </button>
+            </form>
+
+            <p class="text-sm text-gray-600 mt-4">
+                <a href="#" class="toggle-link text-blue-500 hover:underline transition duration-300">Already a user?
+                    Login</a>
+            </p>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const formTitle = document.getElementById('form-title');
+                const authForm = document.getElementById('auth-form');
+                const toggleLink = document.querySelector('.toggle-link');
+                const usernameField = document.getElementById('username-field');
+                const submitBtn = document.getElementById('submit-btn');
+
+                let isSignUp = true;
+
+                // Show sign-up form by default
+                formTitle.textContent = 'Sign Up';
+                toggleLink.textContent = 'Already a user? Login';
+                usernameField.classList.remove('hidden'); // Show the username field
+                submitBtn.textContent = 'Sign Up';
+
+                toggleLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    isSignUp = !isSignUp;
+
+                    if (isSignUp) {
+                        formTitle.textContent = 'Sign Up';
+                        authForm.action = '/signup'; // Set your sign-up form action here
+                        toggleLink.textContent = 'Already a user? Login';
+                        usernameField.classList.remove('hidden'); // Show the username field in sign-up form
+                        submitBtn.textContent = 'Sign Up';
+                    } else {
+                        formTitle.textContent = 'Login';
+                        authForm.action = '/login'; // Set your login form action here
+                        toggleLink.textContent = 'Not a user? Sign Up';
+                        usernameField.classList.add('hidden'); // Hide the username field in login form
+                        submitBtn.textContent = 'Log In';
+                    }
+                });
+            });
+        </script>
+        <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
+</body>
+
+</html>

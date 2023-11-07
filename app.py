@@ -11,11 +11,16 @@ app.config['SECRET_KEY'] = '3b96c64401d7'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 db = SQLAlchemy(app)
 
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(255), nullable=False)
+    username = db.Column(db.String(45), unique=True, nullable=False)
+    email = db.Column(db.String(255),unique=True, nullable=False)
+    password = db.Column(db.String(45), nullable=False)
+
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
 
 
 class Category(db.Model):
@@ -61,6 +66,38 @@ class Booking(db.Model):
         self.booking_date = booking_date
         self.start_time = start_time
         self.end_time = end_time
+
+
+@app.route('/signup', methods=['GET'])
+def signup():
+
+    return render_template('login_signup.html')
+
+# Route to handle sign-up requests
+@app.route('/signup_post', methods=['POST'])
+def signup_post():
+    data = request.get_json()
+
+    # Extract data from the JSON request
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+
+    # Check if username or email already exists in the database
+    existing_user = User.query.filter_by(username=username).first()
+    existing_email = User.query.filter_by(email=email).first()
+
+    if existing_user or existing_email:
+        # Username or email already exists, return failure response
+        return jsonify(success=False, message='Sign up failed. Username or email already exists.'), 400
+    else:
+        # Username and email are unique, create a new user in the database
+        new_user = User(username=username, email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        # Sign up successful, return success response
+        return jsonify(success=True, message='Sign up successful. Welcome, {}!'.format(username)), 200
 
 
 # Home route to display all categories and services
@@ -129,7 +166,6 @@ def confirm_booking():
 @app.route('/history_data')
 def history_data():
     user_id = 2  # Replace this with the actual user ID (e.g., obtained from session)
-
     # Query the Booking table to get bookings for the user
     user_bookings = Booking.query.filter_by(user_id=user_id).all()
 
