@@ -8,22 +8,20 @@ document.addEventListener('DOMContentLoaded', function () {
         // Check the form action
         const formAction = authForm.action.split('/').pop(); // Extract the last part of the URL (either 'signup' or 'login')
 
-        // Proceed only if the form action is 'signup'
-        if (formAction === 'signup') {
+        // Proceed only if the form action is 'login'
+        if (formAction === 'login') {
             // Get form data
-            const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
             // Prepare the data to be sent as JSON
             const formData = {
-                username: username,
                 email: email,
                 password: password
             };
 
             // Send a POST request to the Flask route
-            fetch('/signup_post', {
+            fetch('/login_post', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -34,13 +32,18 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 // Handle the response from the server
                 if (data.success) {
-                    // Sign up was successful, display success message or redirect
-                    console.log('Sign up successful:', data.message);
-                    showFlashMessage("Sign up success!! Go to login");
+                    // Login was successful, display success message or redirect
+                    console.log('Login successful:', data.message);
+                    showFlashMessage("Login successful! Redirecting...");
+
+                    // Redirect to the desired page (for example, dashboard)
+                    setTimeout(() => {
+                        window.location.href = '/services';
+                    }, 3000);
                 } else {
-                    // Sign up failed, display error message to the user
-                    console.error('Sign up failed:', data.message);
-                    showFlashMessage("Sign up failed. Username or email exists!");
+                    // Login failed, display error message to the user
+                    console.error('Login failed:', data.message);
+                    showFlashMessage("Login failed. Invalid email or password.");
                 }
             })
             .catch(error => {
@@ -50,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Function to show a flash message and reload the page after a specified time
+    // Function to show a flash message
     function showFlashMessage(message) {
         const flashMessageContainer = document.getElementById('flash-message-container');
         const flashMessage = document.createElement('div');
@@ -62,10 +65,9 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
         flashMessageContainer.appendChild(flashMessage);
 
-        // Remove the flash message and reload the page after 5 seconds (5000 milliseconds)
+        // Remove the flash message after 5 seconds (5000 milliseconds)
         setTimeout(() => {
             flashMessage.remove();
-            window.location.reload();
         }, 5000);
     }
 });

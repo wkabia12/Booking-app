@@ -83,6 +83,7 @@ def signup_post():
     email = data.get('email')
     password = data.get('password')
 
+
     # Check if username or email already exists in the database
     existing_user = User.query.filter_by(username=username).first()
     existing_email = User.query.filter_by(email=email).first()
