@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from flask import session
 from flask import redirect, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:password@localhost:3306/scheduling_app'
@@ -94,8 +95,9 @@ def signup_post():
         # Username or email already exists, return failure response
         return jsonify(success=False, message='Sign up failed. Username or email already exists.'), 400
     else:
+        hashed_password = generate_password_hash(password)
         # Username and email are unique, create a new user in the database
-        new_user = User(username=username, email=email, password=password)
+        new_user = User(username=username, email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
@@ -114,7 +116,7 @@ def login():
     # Check if the email exists in the database
     user = User.query.filter_by(email=email).first()
 
-    if user and user.password == password:
+    if user and check_password_hash(user.password, password):
         session['user_id'] = user.id 
         # User exists and password matches, return success response
         return jsonify(success=True, message='Login successful. Welcome, {}!'.format(user.username)), 200

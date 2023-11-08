@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <p class="card-text">Time: ${booking.start_time} - ${booking.end_time}</p>
                     </div>
                     <div class="card-footer text-muted">
-                        <button type="button" class="btn btn-primary mr-2">Rate Service</button>
+                        <button type="button" class="btn btn-primary mr-2 rate-button">Rate Service</button>
                         <button type="button" class="btn btn-primary cancel-button" style="background-color: #ccc; color: #fff; border: none;" 
                             onmouseover="this.style.backgroundColor='#ff0000';" onmouseout="this.style.backgroundColor='#ccc';"
                             data-booking-id="${booking.booking_id}">Cancel Booking</button>
@@ -40,6 +40,15 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
             historyContainer.appendChild(cardDiv);
 
+            // Add event listener to rate button
+            const rateButton = cardDiv.querySelector('.rate-button');
+            rateButton.addEventListener('mouseover', function () {
+                this.innerHTML = '<i class="bi bi-hand-thumbs-up" style="margin-right: 15px;"></i> <i class="bi bi-hand-thumbs-down"></i>';
+            });
+            rateButton.addEventListener('mouseout', function () {
+                this.textContent = 'Rate Service';
+            });
+            
             // Add event listener to cancel button
             const cancelButton = cardDiv.querySelector('.cancel-button');
             cancelButton.addEventListener('click', function() {
