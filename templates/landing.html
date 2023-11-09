@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Rada </title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+    <header class="p-5 bg-white shadow-md flex justify-between items-center">
+        <div class="font-bold text-xl">Rada </div>
+    </header>
+
+    <section id="hero" class="text-center py-64 bg-blue-500 text-white">
+        <h1 class="text-4xl font-bold mb-4">Welcome to Rada ?</h1>
+        <p class="text-xl mb-8">Book services from a wide range of categories</p>
+        <a href="{{ url_for('signup') }}" class="px-4 py-2 bg-white text-blue-500 rounded">Book Now</a>
+    </section>
+
+    <section id="services" class="py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        {% for service in services %}
+        <div class="bg-white p-4 shadow-md">
+            <h2 class="text-xl font-bold mb-2">{{ service.name }}</h2>
+            <p class="mb-4">{{ service.description }}</p>
+            <a href="{{ url_for('signup') }}" class="px-4 py-2 bg-blue-500 text-white rounded">Book Now</a>
+        </div>
+        {% endfor %}
+    </section>
+
+    

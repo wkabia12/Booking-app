@@ -6,6 +6,7 @@ from sqlalchemy import text
 from flask import session
 from flask import redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.sql import func
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:password@localhost:3306/scheduling_app'
@@ -69,7 +70,10 @@ class Booking(db.Model):
         self.start_time = start_time
         self.end_time = end_time
 
-
+@app.route('/')
+def home():
+    services = Service.query.order_by(func.rand()).limit(4).all()# Replace with your actual query
+    return render_template('landing.html', services=services)
 
 @app.route('/signup', methods=['GET'])
 def signup():
@@ -140,7 +144,7 @@ def index():
     services = Service.query.all()
 
     # Get the 4 most booked services
-    from sqlalchemy import func
+    
     trendings = db.session.query(Service, func.count(Booking.service_id))\
         .join(Booking)\
         .group_by(Service.id)\
