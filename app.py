@@ -139,7 +139,19 @@ def index():
     categories = Category.query.all()
     services = Service.query.all()
 
-    return render_template('index.html', categories=categories, services=services)
+    # Get the 4 most booked services
+    from sqlalchemy import func
+    trendings = db.session.query(Service, func.count(Booking.service_id))\
+        .join(Booking)\
+        .group_by(Service.id)\
+        .order_by(func.count(Booking.service_id).desc())\
+        .limit(4)\
+        .all()
+    
+    # Get only the Service objects
+    trendings = [trending[0] for trending in trendings]
+
+    return render_template('index.html', categories=categories, services=services, trendings=trendings)
 
 
 # Endpoint to get services based on the selected category

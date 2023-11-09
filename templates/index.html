@@ -44,7 +44,7 @@
                             Account
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="/profile">Profile</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('history') }}">History</a></li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -84,6 +84,24 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ service.name }}</h5>
                         <p class="card-text">{{ service.description }}</p>
+                        <a href=# class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Trending for you -->
+    <div class="container my-3">
+        <h2>Trending for you</h2>
+        <div class="row" id="trendingList">
+            {% for trending in trendings %}
+            <div class="col-md-6 my-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ trending.name }}</h5>
+                        <p class="card-text">{{ trending.description }}</p>
                         <a href=# class="btn btn-primary">Book Now</a>
                     </div>
                 </div>
