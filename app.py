@@ -143,10 +143,13 @@ def index():
     categories = Category.query.all()
     services = Service.query.all()
 
-    # Get the 4 most booked services
-    
+    # Get the current user
+    user_id = session.get('user_id')  # Get user_id from session
+
+    # Get the 4 most booked services by a user
     trendings = db.session.query(Service, func.count(Booking.service_id))\
         .join(Booking)\
+        .filter(Booking.user_id == user_id)\
         .group_by(Service.id)\
         .order_by(func.count(Booking.service_id).desc())\
         .limit(4)\
