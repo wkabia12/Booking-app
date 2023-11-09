@@ -10,10 +10,14 @@
 <body class="bg-gray-100">
     <header class="p-5 bg-white shadow-md flex justify-between items-center">
         <div class="font-bold text-xl">Rada </div>
+        <nav>
+            <a href="{{ url_for('signup') }}" class="text-blue-500 hover:text-blue-700 mr-4">Sign Up / Login</a>
+            <a href="#" class="text-blue-500 hover:text-blue-700">About</a>
+        </nav>
     </header>
 
     <section id="hero" class="text-center py-64 bg-blue-500 text-white">
-        <h1 class="text-4xl font-bold mb-4">Welcome to Rada ?</h1>
+        <h1 class="text-4xl font-bold mb-4">Welcome to Rada</h1>
         <p class="text-xl mb-8">Book services from a wide range of categories</p>
         <a href="{{ url_for('signup') }}" class="px-4 py-2 bg-white text-blue-500 rounded">Book Now</a>
     </section>
