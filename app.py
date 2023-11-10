@@ -7,6 +7,8 @@ from flask import session
 from flask import redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.sql import func
+import os
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:password@localhost:3306/scheduling_app'
@@ -14,11 +16,13 @@ app.config['SECRET_KEY'] = '3b96c64401d7'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 db = SQLAlchemy(app)
 
+migrate = Migrate(app, db)
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(45), unique=True, nullable=False)
     email = db.Column(db.String(255),unique=True, nullable=False)
-    password = db.Column(db.String(45), nullable=False)
+    password = db.Column(db.String(250), nullable=False)
 
     def __init__(self, username, email, password):
         self.username = username
@@ -54,7 +58,7 @@ class Booking(db.Model):
     service_id = db.Column(db.Integer, db.ForeignKey(
         'service.id'), nullable=False)
     booking_date = db.Column(db.Date, nullable=False)
-    # Store time as a string (e.g., "09:00 AM")
+    # Store time as a string (e.g. "09:00 AM")
     start_time = db.Column(db.String(250), nullable=False)
     # Store time as a string (e.g., "10:00 AM")
     end_time =  db.Column(db.String(250), nullable=False)
@@ -255,3 +259,10 @@ def cancel_booking(booking_id):
         return jsonify(message='Booking canceled successfully'), 200
     else:
         return jsonify(message='Booking not found'), 404
+    
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000)
